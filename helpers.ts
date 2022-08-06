@@ -145,5 +145,5 @@ export function arePositionsEqual(positions1: PositionList, positions2: Position
 
 
 export function logPositionsToString(positionsList: PositionList[]): string {
-  return positionsList.map(positions => renderPositions(positions)?.map(row => row.join('\t')).join('\t|\t')).join('\n\n');
+  return positionsList.map(positions => renderPositions(positions)?.map(row => row.join('\t')).join('\t|\t')).join('\n');
 }

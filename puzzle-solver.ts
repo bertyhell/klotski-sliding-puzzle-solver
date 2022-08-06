@@ -14,7 +14,7 @@ function findSolution() {
   let positionsToCheckOnLastLog = 1;
 
   // Run through all possible positions, until you find no more or until we found the winning position
-  while (positionListsToCheck.length > 0 && solvedPositionListInfo === null && seenPositionLists.length < 10000) {
+  while (positionListsToCheck.length > 0 && solvedPositionListInfo === null) {
     const nextPositionsToCheck = positionListsToCheck.shift() as PositionListInfo;
 
     // Log progress to console after every 1000 found possibilities
