@@ -24,6 +24,7 @@ export interface Piece {
   shape: PieceShape;
   id: number;
   type: PieceType;
+  typeId: 1 | 2 | 3 | 4;
 }
 
 export type PlayingField = number[][];
@@ -38,5 +39,5 @@ export type PositionList = [Position, Position, Position, Position, Position, Po
 
 export type PositionListInfo = {
   positions: PositionList
-  parentPositionListIndex: number;
+  parentPlayfieldKey: string | null;
 }

@@ -4,5 +4,7 @@ node_modules
 *.js.map
 *.log
 *.txt
+frames
+*.mp4
 
 !jest.config.js

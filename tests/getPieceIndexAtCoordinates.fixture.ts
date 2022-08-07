@@ -22,7 +22,8 @@ export const getPiecePositions: PositionList = [
         ]
       ],
       "type": PieceType.SQUARE,
-      "id": 1
+      "id": 1,
+      typeId: 1,
     },
     "positionX": 1,
     "positionY": 0
@@ -38,7 +39,8 @@ export const getPiecePositions: PositionList = [
         ]
       ],
       "type": PieceType.VERTICAL,
-      "id": 2
+      "id": 2,
+      typeId: 2,
     },
     "positionX": 0,
     "positionY": 0
@@ -54,7 +56,8 @@ export const getPiecePositions: PositionList = [
         ]
       ],
       "type": PieceType.VERTICAL,
-      "id": 3
+      "id": 3,
+      typeId: 2,
     },
     "positionX": 3,
     "positionY": 2
@@ -70,7 +73,8 @@ export const getPiecePositions: PositionList = [
         ]
       ],
       "type": PieceType.VERTICAL,
-      "id": 4
+      "id": 4,
+      typeId: 2,
     },
     "positionX": 0,
     "positionY": 2
@@ -86,7 +90,8 @@ export const getPiecePositions: PositionList = [
         ]
       ],
       "type": PieceType.VERTICAL,
-      "id": 5
+      "id": 5,
+      typeId: 2,
     },
     "positionX": 2,
     "positionY": 2
@@ -100,7 +105,8 @@ export const getPiecePositions: PositionList = [
         ]
       ],
       "type": PieceType.HORIZONTAL,
-      "id": 6
+      "id": 6,
+      typeId: 3,
     },
     "positionX": 2,
     "positionY": 4
@@ -113,7 +119,8 @@ export const getPiecePositions: PositionList = [
         ]
       ],
       "type": PieceType.SINGLE,
-      "id": 7
+      "id": 7,
+      typeId: 4,
     },
     "positionX": 1,
     "positionY": 2
@@ -126,7 +133,8 @@ export const getPiecePositions: PositionList = [
         ]
       ],
       "type": PieceType.SINGLE,
-      "id": 8
+      "id": 8,
+      typeId: 4,
     },
     "positionX": 0,
     "positionY": 4
@@ -139,7 +147,8 @@ export const getPiecePositions: PositionList = [
         ]
       ],
       "type": PieceType.SINGLE,
-      "id": 9
+      "id": 9,
+      typeId: 4,
     },
     "positionX": 1,
     "positionY": 3
@@ -152,7 +161,8 @@ export const getPiecePositions: PositionList = [
         ]
       ],
       "type": PieceType.SINGLE,
-      "id": 10
+      "id": 10,
+      typeId: 4,
     },
     "positionX": 1,
     "positionY": 4
