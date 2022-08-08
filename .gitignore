@@ -5,6 +5,5 @@ node_modules
 *.log
 *.txt
 frames
-*.mp4
 
 !jest.config.js

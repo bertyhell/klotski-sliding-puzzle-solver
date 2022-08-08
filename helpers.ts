@@ -1,5 +1,15 @@
 import { PlayingField, Position, PositionList, PositionListInfo } from './types';
-import { emptyPlayingField, PLAYFIELD_HEIGHT, PLAYFIELD_WIDTH } from './consts';
+import {
+	BLOCK_SPACING,
+	BLOCK_WIDTH,
+	emptyPlayingField,
+	PAUSE_BETWEEN_TWEENS,
+	PLAYFIELD_HEIGHT,
+	PLAYFIELD_WIDTH,
+	randomColors,
+	START_AND_END_PAUSE,
+	TWEEN_STEPS,
+} from './consts';
 import { cloneDeep, padStart, pullAt } from 'lodash';
 import fs from 'fs';
 import canvasRenderer, { Canvas, CanvasContext } from 'canvas-renderer';
@@ -190,12 +200,6 @@ export function logPositionsToString(positionsList: PositionList[]): string {
 		.join('\n');
 }
 
-const BLOCK_WIDTH = 200;
-const BLOCK_SPACING = 5;
-const TWEEN_STEPS = 40;
-const PAUSE_BETWEEN_TWEENS = 20;
-const randomColors = ['#e0220d', '#8a4e1f', '#8a4e1f', '#8a4e1f'];
-
 export function findChangedPosition(
 	lastStep: PositionListInfo,
 	currentStep: PositionListInfo
@@ -241,7 +245,7 @@ function drawPositions(
 	});
 }
 
-async function writeImageToFile(canvas: Canvas, frameCount: number): Promise<void> {
+export async function writeImageToFile(canvas: Canvas, frameCount: number): Promise<void> {
 	return new Promise<void>(async (resolve, reject) => {
 		const path = `./frames/frame-${padStart(String(frameCount), 4, '0')}.png`;
 		// console.log('writing frame: ' + path);
@@ -263,8 +267,6 @@ async function writeImageToFile(canvas: Canvas, frameCount: number): Promise<voi
 }
 
 async function interpolateBetweenSteps(
-	canvas: Canvas,
-	ctx: CanvasContext,
 	playfieldWidth: number,
 	playfieldHeight: number,
 	lastStep: PositionListInfo,
@@ -278,6 +280,8 @@ async function interpolateBetweenSteps(
 
 	// Tween between previous and current step
 	for (let tweenStep = 0; tweenStep < TWEEN_STEPS; tweenStep++) {
+		const canvas = canvasRenderer.createCanvas(playfieldWidth, playfieldHeight);
+		const ctx = canvas.getContext('2d');
 		drawPositions(ctx, playfieldWidth, playfieldHeight, unchangedPositions);
 
 		const position = cloneDeep(changePositionCurrentStep);
@@ -302,6 +306,8 @@ async function interpolateBetweenSteps(
 	}
 
 	// Add a pause between tweens
+	const canvas = canvasRenderer.createCanvas(playfieldWidth, playfieldHeight);
+	const ctx = canvas.getContext('2d');
 	drawPositions(ctx, playfieldWidth, playfieldHeight, currentStep.positions);
 	for (let i = 0; i < PAUSE_BETWEEN_TWEENS; i++) {
 		await writeImageToFile(canvas, newFrameCount);
@@ -324,10 +330,18 @@ export async function drawFrames(trail: PositionListInfo[]) {
 	}
 	const playfieldWidth: number = (playfield[0] as number[]).length * BLOCK_WIDTH;
 	const playfieldHeight: number = playfield.length * BLOCK_WIDTH;
-	const canvas = canvasRenderer.createCanvas(playfieldWidth, playfieldHeight);
-
-	const ctx = canvas.getContext('2d');
 	let frameCount = 0;
+
+	// Draw first position a few frames
+	const canvas = canvasRenderer.createCanvas(playfieldWidth, playfieldHeight);
+	const ctx = canvas.getContext('2d');
+	drawPositions(ctx, playfieldWidth, playfieldHeight, (trail[0] as PositionListInfo).positions);
+	for (let i = 0; i < START_AND_END_PAUSE; i++) {
+		await writeImageToFile(canvas, frameCount);
+		frameCount++;
+	}
+
+	// Draw animation between the positions
 	for (let stepIndex = 0; stepIndex < trail.length; stepIndex++) {
 		const step = trail[stepIndex];
 		// if (stepIndex > 20) {
@@ -337,8 +351,6 @@ export async function drawFrames(trail: PositionListInfo[]) {
 		if (lastStep) {
 			console.log('generating frames for step: ' + stepIndex);
 			frameCount = await interpolateBetweenSteps(
-				canvas,
-				ctx,
 				playfieldWidth,
 				playfieldHeight,
 				lastStep,
@@ -347,5 +359,20 @@ export async function drawFrames(trail: PositionListInfo[]) {
 			);
 		}
 	}
-	console.log('finished generating frames');
+
+	// Draw ending position a few times
+	if (START_AND_END_PAUSE > PAUSE_BETWEEN_TWEENS) {
+		drawPositions(
+			ctx,
+			playfieldWidth,
+			playfieldHeight,
+			(trail[0] as PositionListInfo).positions
+		);
+		for (let i = 0; i < START_AND_END_PAUSE - PAUSE_BETWEEN_TWEENS; i++) {
+			await writeImageToFile(canvas, frameCount);
+			frameCount++;
+		}
+	}
+
+	console.log('finished generating frames.', frameCount);
 }

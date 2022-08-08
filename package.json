@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "ts-node puzzle-solver.ts",
-    "frames-to-mp4": "ffmpeg -framerate 30 -pattern_type sequence -start_number 0000 -i \".\\frames\\frame-%04d.png\" -s 800x1000 \".\\solution.mp4\"",
+    "frames-to-mp4": "ffmpeg -framerate 60 -pattern_type sequence -start_number 0000 -i \".\\frames\\frame-%04d.png\" -s 800x1000 \".\\solution.mp4\"",
     "test": "jest"
   },
   "author": "Bert Verhelst",
